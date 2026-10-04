@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="main"/>
+        <attribute name="authors" value="user"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-10-04 01:25:19 PM"/>
+        <attribute name="created" value="dXNlcjtERVNLVE9QLUI1UzMyVlQ7MjAyNi0xMC0wMzsxMDozNDo1MiBQTTsyNzc2"/>
+        <attribute name="edited" value="dXNlcjtERVNLVE9QLUI1UzMyVlQ7MjAyNi0xMC0wNDswMToyNToxOSBQTTsyOzI4ODk="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="criticalCount, highCount, mediumCount, lowCount, trips, totalReports, i, fillLevel, daysSince" type="Integer" array="False" size=""/>
+            <declare name="wardName, wasteType, priority" type="String" array="False" size=""/>
+            <declare name="isHazardous, isValid" type="Boolean" array="False" size=""/>
+            <assign variable="criticalCount" expression="0"/>
+            <assign variable="highCount" expression="0"/>
+            <assign variable="mediumCount" expression="0"/>
+            <assign variable="lowCount" expression="0"/>
+            <output expression="&quot;Enter number of reports&quot;" newline="True"/>
+            <input variable="totalReports"/>
+            <if expression="totalReports &lt; 1">
+                <then>
+                    <output expression="&quot;Invalid number of reports&quot;" newline="True"/>
+                </then>
+                <else>
+                    <for variable="i" start="1" end="totalReports" direction="inc" step="1">
+                        <do expression="isValid = false">
+                            <output expression="&quot;Enter ward name&quot;" newline="True"/>
+                            <input variable="wardName"/>
+                            <output expression="&quot;Enter fill Level (0 to 100)&quot;" newline="True"/>
+                            <input variable="fillLevel"/>
+                            <output expression="&quot;Enter waste type&quot;" newline="True"/>
+                            <input variable="wasteType"/>
+                            <output expression="&quot;Is the waste hazardous? Type true or false&quot;" newline="True"/>
+                            <input variable="isHazardous"/>
+                            <output expression="&quot;Enter days since collection&quot;" newline="True"/>
+                            <input variable="daysSince"/>
+                            <assign variable="isValid" expression="validateReports(wardName, fillLevel, daysSince)"/>
+                            <if expression="isValid = false">
+                                <then>
+                                    <output expression="&quot;Invalid data, re-enter report&quot;" newline="True"/>
+                                </then>
+                                <else/>
+                            </if>
+                        </do>
+                        <assign variable="priority" expression="classifyPriority(fillLevel, isHazardous, daysSince)"/>
+                        <if expression="priority == &quot;CRITICAL&quot;">
+                            <then>
+                                <assign variable="criticalCount" expression="criticalCount + 1"/>
+                            </then>
+                            <else>
+                                <if expression="priority == &quot;HIGH&quot;">
+                                    <then>
+                                        <assign variable="highCount" expression="highCount + 1"/>
+                                    </then>
+                                    <else>
+                                        <if expression="priority == &quot;MEDIUM&quot;">
+                                            <then>
+                                                <assign variable="mediumCount" expression="mediumCount + 1"/>
+                                            </then>
+                                            <else>
+                                                <assign variable="lowCount" expression="lowCOUNT + 1"/>
+                                            </else>
+                                        </if>
+                                    </else>
+                                </if>
+                            </else>
+                        </if>
+                        <output expression="wardName &amp; &quot; = &quot; &amp; priority" newline="True"/>
+                    </for>
+                    <assign variable="trips" expression="calculateTrips(totalReports)"/>
+                    <output expression="&quot;===== CLEANFREETOWN SUMMARY =====&quot;" newline="True"/>
+                    <output expression="&quot;CRITICAL: &quot; &amp; criticalCount" newline="True"/>
+                    <output expression="&quot;HIGH: &quot;&amp; highCount" newline="True"/>
+                    <output expression="&quot;MEDIUM: &quot; &amp; mediumCount" newline="True"/>
+                    <output expression="&quot;LOW: &quot; &amp; lowCount" newline="True"/>
+                    <output expression="&quot;Truck trips needed: &quot; &amp; trips" newline="True"/>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="validateReport" type="None" variable="">
+        <parameters/>
+        <body/>
+    </function>
+</flowgorithm>
